@@ -262,7 +262,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; margin-top: 40px; counter-reset: s; }
 .steps li { background: var(--cream); border-radius: 6px 18px 8px 16px; padding: 26px 22px 24px; display: grid; gap: 10px; align-content: start; position: relative; }
 .step-n { font: 900 60px/.8 var(--f-display); color: var(--orange); }
-.steps h3 { font-size: 22px; }
+.steps h3 { font-size: 22px; white-space: nowrap; }
 .steps p { font-size: 15px; color: var(--muted); }
 .steps li:not(:last-child)::after { content: "→"; position: absolute; right: -16px; top: 30px; font: 700 24px var(--f-body); color: var(--orange); z-index: 1; }
 
@@ -289,6 +289,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .contact-list span { font: 700 13px var(--f-display); text-transform: uppercase; letter-spacing: .1em; color: var(--yolk); }
 .contact-list a, .contact-list p { font-size: 20px; font-weight: 600; text-decoration: none; }
 .contact-list a:hover { color: var(--yolk); }
+.contact-list .contact-small { font-size: 15px; font-weight: 500; line-height: 1.45; opacity: .85; }
 
 .contact-form { display: grid; gap: 16px; background: var(--cream); color: var(--ink); padding: clamp(22px, 3vw, 34px); border-radius: 8px 22px 10px 18px; }
 .field { display: grid; gap: 6px; }
@@ -312,7 +313,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .footer-nav a { text-decoration: none; font: 700 14px var(--f-display); text-transform: uppercase; letter-spacing: .06em; }
 .footer-nav a:hover { color: var(--yolk); }
 .copy { font-size: 13px; opacity: .75; }
-.footer-legal { margin-top: 22px; display: grid; gap: 4px; font-size: 12px; line-height: 1.5; opacity: .6; }
 
 /* ---------- 16. Модалка смаку ---------- */
 .flavor-dialog { border: 0; padding: 0; border-radius: 18px; width: min(820px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior: contain; background: var(--cream); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(42, 19, 11, .6); }
@@ -351,6 +351,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .fd-nutr tr.sub { border-top: 0; }
 .fd-nutr tr.sub th { font-weight: 400; padding-left: 14px; color: var(--muted); }
 .fd-nutr tr:last-child { border-top: 2px solid var(--ink); }
+.fd-legal { margin-top: 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
 .fd-body h3 { font-size: 44px; }
 .fd-badges { display: flex; flex-wrap: wrap; gap: 8px; }
 .fd-badges li { background: var(--paper); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
@@ -371,15 +372,38 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   :root { --header-h: 66px; }
   .logo img { height: 46px; }
   .burger { display: block; }
+  /* мобільне меню — випадна панель висотою за вмістом, а не на весь екран */
   .main-nav {
-    position: fixed; left: 0; right: 0; top: calc(var(--header-h) + env(safe-area-inset-top, 0px)); bottom: 0;
-    flex-direction: column; gap: 4px; margin: 0; padding: 20px var(--gutter) 40px;
-    background: var(--paper); overflow-y: auto;
-    opacity: 0; transform: translateY(-10px); visibility: hidden; transition: opacity .25s, transform .25s, visibility .25s;
+    position: fixed; left: 0; right: 0; top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+    max-height: calc(100dvh - var(--header-h) - env(safe-area-inset-top, 0px)); overflow-y: auto;
+    flex-direction: column; gap: 0; margin: 0; padding: 6px var(--gutter) 24px;
+    background: var(--paper); border-radius: 0 0 22px 22px;
+    box-shadow: 0 24px 40px -18px rgba(42, 19, 11, .45);
+    /* плавне «розгортання» зверху вниз */
+    clip-path: inset(0 0 100% 0 round 0 0 22px 22px); visibility: hidden;
+    transition: clip-path .45s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .45s;
   }
-  .main-nav.is-open { opacity: 1; transform: none; visibility: visible; }
-  .main-nav a:not(.btn) { font-size: 26px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .main-nav.is-open {
+    clip-path: inset(0 0 -60px 0 round 0 0 22px 22px); visibility: visible;
+    transition: clip-path .45s cubic-bezier(.22, 1, .36, 1), visibility 0s;
+  }
+  .main-nav a:not(.btn) { font-size: 22px; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .nav-cta-mobile { display: inline-flex !important; align-self: flex-start; margin-top: 18px; }
+  /* пункти зʼявляються один за одним */
+  .main-nav > a { opacity: 0; transform: translateY(-8px); transition: opacity .3s, transform .3s; }
+  .main-nav.is-open > a { opacity: 1; transform: none; }
+  .main-nav.is-open > a:nth-child(2) { transition-delay: .04s; }
+  .main-nav.is-open > a:nth-child(3) { transition-delay: .08s; }
+  .main-nav.is-open > a:nth-child(4) { transition-delay: .12s; }
+  .main-nav.is-open > a:nth-child(5) { transition-delay: .16s; }
+  .main-nav.is-open > a:nth-child(6) { transition-delay: .20s; }
+  .main-nav.is-open > a:nth-child(7) { transition-delay: .24s; }
+  /* затемнення сторінки під меню; тап по ньому закриває меню */
+  .nav-overlay {
+    position: fixed; inset: 0; z-index: 40; background: rgba(42, 19, 11, .45);
+    opacity: 0; visibility: hidden; transition: opacity .35s, visibility 0s linear .35s;
+  }
+  html.menu-open .nav-overlay { opacity: 1; visibility: visible; transition: opacity .35s, visibility 0s; }
 
   .hero-grid, .split { grid-template-columns: 1fr; }
   .hero-copy { padding-bottom: 8px; }
@@ -405,7 +429,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .steps li:last-child { grid-column: 1 / -1; }
   .steps li { padding: 20px 16px; }
-  .steps h3 { font-size: clamp(16px, 4.6vw, 22px); overflow-wrap: anywhere; }
+  .steps h3 { font-size: clamp(17px, 4.8vw, 22px); }
   .stage-back { width: 92%; }
   .btn-brush { font-size: 18px; padding-inline: 34px 38px; }
   .fd-body { padding: 26px 22px; }
