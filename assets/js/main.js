@@ -10,7 +10,7 @@
     nav.classList.toggle("is-open", open);
     burger.setAttribute("aria-expanded", String(open));
     burger.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
-    document.body.classList.toggle("menu-open", open);
+    document.documentElement.classList.toggle("menu-open", open);
   }
   burger.addEventListener("click", function () {
     setMenu(!nav.classList.contains("is-open"));
@@ -48,14 +48,37 @@
   var fdDesc = document.getElementById("fd-desc");
   var fdSizes = document.getElementById("fd-sizes");
   var fdProtein = document.getElementById("fd-protein");
+  var fdTagline = document.getElementById("fd-tagline");
+  var fdComp = document.getElementById("fd-comp");
+  var fdNutr = document.getElementById("fd-nutr");
   var current = null;
+
+  // 20.4 -> "20,4"
+  function num(n) { return String(n).replace(".", ","); }
+
+  // таблиця харчової цінності, як на звороті пачки
+  function nutrRows(n) {
+    if (!n) return "";
+    var rows = [
+      ["Білки", num(n.protein) + " г"],
+      ["Жири", num(n.fat) + " г"],
+      ["з них насичені", num(n.satFat) + " г", true],
+      ["Вуглеводи", num(n.carbs) + " г"],
+      ["з них цукри", num(n.sugar) + " г", true],
+      ["Сіль", num(n.salt) + " г"],
+      ["Енергетична цінність", n.kj + " кДж / " + n.kcal + " ккал"]
+    ];
+    return rows.map(function (r) {
+      return '<tr' + (r[2] ? ' class="sub"' : "") + "><th scope=\"row\">" + r[0] + "</th><td>" + r[1] + "</td></tr>";
+    }).join("");
+  }
 
   // показати вибрану вагу: фото, білок, активна кнопка
   function selectSize(idx) {
     var s = sizesOf(current)[idx];
     fdImg.src = imgOf(current, s);
     fdImg.alt = "Пачка Ципка " + current.name + ", " + s.g + " г";
-    fdProtein.textContent = s.protein + " г";
+    fdProtein.textContent = num(s.protein) + " г";
     [].forEach.call(fdSizes.children, function (b, i) {
       b.setAttribute("aria-checked", String(i === idx));
     });
@@ -70,6 +93,10 @@
     current = flavors[+btn.dataset.i];
     fdTitle.textContent = current.name;
     fdDesc.textContent = current.desc;
+    fdTagline.textContent = current.tagline || "";
+    fdComp.textContent = current.comp || "";
+    fdNutr.innerHTML = nutrRows(current.nutr);
+    dlg.querySelector(".fd-more").open = false;
     fdSizes.innerHTML = sizesOf(current).map(function (s, i) {
       return '<button type="button" role="radio" data-size="' + i + '">' + s.g + " г</button>";
     }).join("");
