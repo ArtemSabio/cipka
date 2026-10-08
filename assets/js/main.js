@@ -15,6 +15,8 @@
   burger.addEventListener("click", function () {
     setMenu(!nav.classList.contains("is-open"));
   });
+  // тап по затемненню закриває меню
+  document.getElementById("nav-overlay").addEventListener("click", function () { setMenu(false); });
   nav.addEventListener("click", function (e) {
     if (e.target.closest("a")) setMenu(false);
   });
