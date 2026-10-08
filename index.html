@@ -101,7 +101,7 @@
     </li>
     <li>
       <svg class="ico-lg" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 29c-6 0-10-4-10-9 0-6 6-8 6-15 4 2 7 6 7 10 1-1 2-3 2-5 3 3 5 6 5 10 0 5-4 9-10 9z"/><path d="M16 29c-2.5 0-4-2-4-4 0-3 4-4 4-7 2 2 4 4 4 7 0 2-1.5 4-4 4z"/></svg>
-      <div><strong>Запечені, не смажені</strong><span>зберігаємо смак та користь</span></div>
+      <div><strong>В'ялені, не смажені</strong><span>повільно, у спеціальній камері</span></div>
     </li>
     <li>
       <svg class="ico-lg" viewBox="0 0 32 32" aria-hidden="true"><path d="M9 5h14l-1 3 2 18a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2l2-18z"/><path d="M10 8h12"/><circle cx="16" cy="17" r="4"/></svg>
@@ -169,26 +169,32 @@
 <section class="section how" id="how">
   <div class="container">
     <h2 class="h2">Як ми робимо</h2>
+    <!-- 5 кроків з упаковки: «Як Ципка стає такою смачною» -->
     <ol class="steps">
       <li>
         <span class="step-n">1</span>
-        <h3>Відбираємо філе</h3>
-        <p>Лише свіже куряче філе. Нарізаємо вздовж волокон, щоб джерки були соковитими.</p>
+        <h3>Обробляємо</h3>
+        <p>добірне куряче філе</p>
       </li>
       <li>
         <span class="step-n">2</span>
-        <h3>Маринуємо</h3>
-        <p>Власні маринади та спеції для кожного з семи смаків.</p>
+        <h3>Додаємо спеції</h3>
+        <p>та фірмовий смак</p>
       </li>
       <li>
         <span class="step-n">3</span>
-        <h3>Запікаємо</h3>
-        <p>Не смажимо, а повільно запікаємо. Так зберігаються смак і користь.</p>
+        <h3>Повільно в'ялимо</h3>
+        <p>у спеціальній камері</p>
       </li>
       <li>
         <span class="step-n">4</span>
-        <h3>Пакуємо</h3>
-        <p>Пачки по 25 і 40 г із zip-замком. Зручно взяти з собою.</p>
+        <h3>Нарізаємо шматочками</h3>
+        <p>для зручного споживання</p>
+      </li>
+      <li>
+        <span class="step-n">5</span>
+        <h3>Смачна Ципка</h3>
+        <p>готова!</p>
       </li>
     </ol>
   </div>
@@ -211,7 +217,6 @@
       <ul class="checks">
         <li>Яскрава упаковка, що помітна на полиці</li>
         <li>Повна лінійка з 7 смаків</li>
-        <li>Пакування по 25 та 40 грам</li>
         <li>Прайс і умови поставки за запитом</li>
       </ul>
       <a href="#contacts" class="btn-brush">Стати партнером
@@ -278,6 +283,11 @@
     </nav>
     <p class="copy">© <span id="year">2026</span> Ципка. Усі права захищено.</p>
   </div>
+  <!-- Дані з упаковки -->
+  <div class="container footer-legal">
+    <p>Виробник: ТОВ «Виробництво м'ясних снеків», вул. Параджанова Сергія, 125, м. Житомир, 10025, Україна.</p>
+    <p>ТУ У 10.1-45377367-001:2024 · Термін придатності 6 міс · Зберігати при 0…+25 °C, відносній вологості до 75 %.</p>
+  </div>
 </footer>
 
 <!-- ============ МОДАЛКА СМАКУ ============ -->
@@ -286,14 +296,24 @@
   <div class="fd-grid">
     <div class="fd-pack"><img id="fd-img" src="" alt=""></div>
     <div class="fd-body">
+      <p class="fd-tagline note" id="fd-tagline"></p>
       <h3 id="fd-title"></h3>
       <p id="fd-desc"></p>
       <!-- Вибір ваги: кнопки генеруються з sizes у assets/js/flavors.js -->
       <div class="fd-sizes" role="radiogroup" aria-label="Вага пачки" id="fd-sizes"></div>
       <ul class="fd-badges">
         <li><b id="fd-protein">15 г</b> білка в пачці</li>
-        <li><b>100%</b> натуральне м'ясо</li>
+        <li><b>6 міс</b> термін придатності</li>
       </ul>
+      <!-- Склад і харчова цінність — з упаковки, заповнюється з flavors.js -->
+      <details class="fd-more">
+        <summary>Склад і харчова цінність</summary>
+        <p class="fd-comp"><b>Склад:</b> <span id="fd-comp"></span></p>
+        <table class="fd-nutr">
+          <caption>Поживна цінність на 100 г продукту</caption>
+          <tbody id="fd-nutr"></tbody>
+        </table>
+      </details>
       <!-- Поки сайт-візитка: замість кошика ведемо до контактів. Потім тут буде "В кошик" -->
       <a href="#contacts" class="btn-brush" data-close>Де купити</a>
     </div>
